@@ -319,19 +319,42 @@ mark { background: color-mix(in srgb, var(--accent-2) 30%, transparent); color: 
 }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-/* ───────────── Folded iPhone Duo: nav in the vertical strip on the right edge ───────────── */
-.app.edge-rail { --edge: max(var(--sar), 64px); }
+/* Wrappers only matter for the folded side strip; elsewhere they're transparent. */
+.nav-views, .nav-group { display: contents; }
+
+/* ───────────── Folded iPhone Duo: floating controls in the black strip on the right edge ───────────── */
+/* Mirrors the system style: pure-black strip, clock/battery at the top (left clear),
+   round icon-only buttons and pill groups floating below. */
+.app.edge-rail { --edge: max(var(--sar), 64px); --pill: #1c1c1f; --pill-line: rgba(255, 255, 255, 0.08); }
 .app.edge-rail .nav {
   left: auto; right: 0; top: 0; bottom: 0;
   width: var(--edge); height: auto;
-  flex-direction: column; justify-content: flex-start; gap: 2px;
-  padding: calc(var(--sat) + 10px) 0 calc(var(--sab) + 10px);
-  border-top: 0; border-left: 0.5px solid var(--line);
+  flex-direction: column; justify-content: flex-start; align-items: center; gap: 14px;
+  padding: clamp(96px, 21vh, 176px) 0 calc(var(--sab) + 16px);
+  background: #000; border: 0;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
   overflow-y: auto; scrollbar-width: none;
-  z-index: 45; /* stays visible over an open story so Back/Next are always reachable */
+  z-index: 45; /* stays visible over an open story */
 }
-.app.edge-rail .nav-btn { min-width: 0; width: 100%; min-height: 46px; font-size: 9.5px; }
-.app.edge-rail .nav-tools:not([hidden]) { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 100%; margin-top: 8px; padding-top: 8px; border-top: 0.5px solid var(--line); }
+.app.edge-rail .nav-btn {
+  width: 48px; height: 48px; min-width: 0; min-height: 0; padding: 0;
+  border-radius: 50%; justify-content: center; gap: 0;
+  color: #e9e9ee;
+}
+.app.edge-rail .nav-btn span { display: none; }
+.app.edge-rail .nav-btn svg { width: 24px; height: 24px; }
+.app.edge-rail .nav-btn:active { background: rgba(255, 255, 255, 0.1); }
+.app.edge-rail .nav-btn[aria-current="true"] { color: var(--accent); }
+.app.edge-rail .nav-btn.on { color: var(--accent); }
+.app.edge-rail .nav-views,
+.app.edge-rail .nav-group {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 6px 0; width: 54px; border-radius: 27px;
+  background: var(--pill); border: 1px solid var(--pill-line);
+}
+.app.edge-rail .nav-back { width: 54px; height: 54px; background: var(--pill); border: 1px solid var(--pill-line); }
+.app.edge-rail .nav-back svg { width: 28px; height: 28px; stroke-width: 2.2; }
+.app.edge-rail .nav-tools:not([hidden]) { display: flex; flex-direction: column; align-items: center; gap: 14px; order: -1; }
 .app.edge-rail .topbar { padding-right: calc(var(--edge) + 12px); }
 .app.edge-rail .chips { margin-right: calc(-12px - var(--edge)); padding-right: calc(var(--edge) + 12px); }
 .app.edge-rail .scroller { padding-right: calc(var(--edge) + 10px); padding-bottom: calc(var(--sab) + 20px); }
@@ -339,9 +362,13 @@ mark { background: color-mix(in srgb, var(--accent-2) 30%, transparent); color: 
 @media (max-width: 420px) { .app.edge-rail .updated { display: none; } }
 .app.edge-rail .detail-pane { right: var(--edge); }
 .app.edge-rail .detail-bar { padding-right: 12px; }
-.app.edge-rail .detail-bar .back-btn { display: none; } /* Back lives in the side bar */
+.app.edge-rail .detail-bar .back-btn { display: none; } /* Back lives in the side strip */
 .app.edge-rail .detail-scroll { padding-right: 20px; }
-.app.edge-rail ~ .toast { bottom: calc(var(--sab) + 20px); left: calc(50% - var(--edge, 64px) / 2); }
+.app.edge-rail ~ .toast { bottom: calc(var(--sab) + 20px); left: calc(50% - 32px); }
+@media (max-height: 640px) {
+  .app.edge-rail .nav { gap: 10px; padding-top: 72px; }
+  .app.edge-rail .nav-btn { width: 42px; height: 42px; }
+}
 
 /* ───────────── Phone landscape (short screens): side rail instead of tab bar ───────────── */
 @media (orientation: landscape) and (max-height: 540px) {
