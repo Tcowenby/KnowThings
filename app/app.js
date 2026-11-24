@@ -32,6 +32,7 @@ const state = {
   watch: store.get('watch', DEFAULT_WATCH),
   muted: new Set(store.get('muted', [])),
   theme: store.get('theme', 'auto'),
+  navSide: store.get('navSide', 'auto'), // auto | side | bottom
   hideRead: store.get('hideRead', false),
   lastVisit: store.get('lastVisit', 0),
   loading: false,
@@ -226,6 +227,7 @@ function settingsHTML() {
     </div><p class="hint">Stories mentioning these appear in the Watchlist tab.</p></div>
 
     <div class="group"><h3>Display</h3><div class="box">
+      <div class="row"><span class="grow">Navigation<small>Side puts the buttons in a bar down the right edge when the phone is folded</small></span><span class="seg">${[['auto', 'Auto'], ['side', 'Side'], ['bottom', 'Bottom']].map(([v, l]) => `<button data-nav-side="${v}" aria-pressed="${state.navSide === v}">${l}</button>`).join('')}</span></div>
       <div class="row"><span class="grow">Theme</span><span class="seg">${['auto', 'light', 'dark'].map((t) => `<button data-theme-set="${t}" aria-pressed="${state.theme === t}">${t[0].toUpperCase() + t.slice(1)}</button>`).join('')}</span></div>
       <div class="row"><span class="grow">Hide stories I’ve read</span><button class="switch" role="switch" aria-checked="${state.hideRead}" data-toggle-hideread aria-label="Hide read"></button></div>
       <div class="row"><span class="grow">Mark everything as read</span><button class="add" data-markall>Mark</button></div>
@@ -340,7 +342,19 @@ function pulseHTML() {
   </div>`;
 }
 
+// Folded iPhone Duo: the cover screen has a vertical strip down the right edge.
+// Safari reports it as a right-hand safe-area inset; when it's there, the nav moves into it.
+const edgeProbe = Object.assign(document.createElement('div'), { style: 'position:fixed;visibility:hidden;pointer-events:none;padding-right:env(safe-area-inset-right,0px)' });
+document.body.appendChild(edgeProbe);
+function applyEdgeRail() {
+  const inset = parseFloat(getComputedStyle(edgeProbe).paddingRight) || 0;
+  const narrowPortrait = !isWide() && !matchMedia('(orientation: landscape) and (max-height: 540px)').matches;
+  const want = state.navSide === 'side' || (state.navSide === 'auto' && inset >= 24);
+  app.classList.toggle('edge-rail', narrowPortrait && want);
+}
+
 function render() {
+  applyEdgeRail();
   document.documentElement.dataset.theme = state.theme === 'auto' ? '' : state.theme;
   if (state.theme === 'auto') delete document.documentElement.dataset.theme;
   document.querySelectorAll('.nav-btn').forEach((b) => b.setAttribute('aria-current', String(b.dataset.view === state.view)));
@@ -356,6 +370,7 @@ function persist() {
   store.set('watch', state.watch);
   store.set('muted', [...state.muted]);
   store.set('theme', state.theme);
+  store.set('navSide', state.navSide);
   store.set('hideRead', state.hideRead);
   store.set('sort', state.sort);
   store.set('view', state.view === 'settings' ? 'feed' : state.view);
@@ -427,6 +442,7 @@ document.addEventListener('click', async (e) => {
   if (d.mute) { state.muted.add(d.mute); persist(); toast(`Muted ${d.mute}`); closeDetail(); history.state?.detail && history.back(); renderList(); return; }
   if (d.unmute) { state.muted.delete(d.unmute); persist(); renderList(); return; }
   if (d.unwatch != null) { state.watch.splice(Number(d.unwatch), 1); persist(); renderList(); return; }
+  if (d.navSide) { state.navSide = d.navSide; persist(); applyEdgeRail(); renderList(); return; }
   if (d.themeSet) { state.theme = d.themeSet; persist(); render(); return; }
   if ('toggleHideread' in d) { state.hideRead = !state.hideRead; persist(); renderList(); return; }
   if ('markall' in d) { (state.feed?.items || []).forEach((i) => state.read.add(i.id)); persist(); toast('All caught up'); return; }
@@ -510,6 +526,7 @@ scroller.addEventListener('scroll', () => $('#topbar').classList.toggle('scrolle
 // Re-render the detail pane when the layout changes (fold/unfold, rotate).
 let lastWide = isWide();
 const onResize = () => {
+  applyEdgeRail();
   const w = isWide();
   if (w !== lastWide) { lastWide = w; renderDetail(); }
 };
