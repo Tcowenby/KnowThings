@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>KnowThings</title>
+  <meta name="description" content="Live radar for AI: models, labs, chips, robotics, policy and military AI.">
+  <meta name="theme-color" content="#f6f7fb" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b0d14" media="(prefers-color-scheme: dark)">
+  <!-- iOS home-screen app -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="KnowThings">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" class="app">
+    <nav class="nav" id="nav" aria-label="Sections">
+      <div class="nav-logo" aria-hidden="true"><img src="icons/icon-192.png" alt=""></div>
+      <button class="nav-btn" data-view="feed" aria-label="Feed">
+        <svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h10"/></svg><span>Feed</span>
+      </button>
+      <button class="nav-btn" data-view="foryou" aria-label="Watchlist">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>Watchlist</span>
+      </button>
+      <button class="nav-btn" data-view="saved" aria-label="Saved">
+        <svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg><span>Saved</span>
+      </button>
+      <button class="nav-btn" data-view="settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Settings</span>
+      </button>
+    </nav>
+
+    <section class="pane list-pane" aria-label="Stories">
+      <header class="topbar" id="topbar">
+        <div class="title-row">
+          <h1 class="brand" id="view-title">KnowThings</h1>
+          <span class="updated" id="updated"></span>
+          <button class="icon-btn" id="refresh" aria-label="Refresh">
+            <svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+          </button>
+        </div>
+        <div class="search-row" id="search-row">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <input id="search" type="search" placeholder="Search AI news" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search">
+        </div>
+        <div class="chips" id="chips" role="tablist"></div>
+      </header>
+      <div class="scroller" id="scroller">
+        <div class="ptr" id="ptr"><svg viewBox="0 0 24 24"><path d="M12 4v14M6 12l6 6 6-6"/></svg></div>
+        <div id="banner"></div>
+        <div class="list" id="list" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="pane detail-pane" id="detail" aria-label="Story details"></section>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js" type="module"></script>
+</body>
+</html>
