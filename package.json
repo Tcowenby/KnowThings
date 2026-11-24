@@ -1,0 +1,17 @@
+{
+  "name": "knowthings",
+  "version": "1.0.0",
+  "private": true,
+  "description": "KnowThings — an AI news radar. Aggregates AI, frontier-model, chip, robotics, policy and military-AI news into an installable iPhone web app.",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "scrape": "node scraper/index.js",
+    "test": "node --test test/*.test.js",
+    "serve": "node scripts/serve.js",
+    "icons": "python3 scripts/make-icons.py"
+  },
+  "dependencies": {
+    "fast-xml-parser": "5.12.0"
+  }
+}
