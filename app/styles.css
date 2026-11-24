@@ -102,6 +102,11 @@ input, textarea { font: inherit; font-size: 16px; /* ≥16px stops iOS zoom-on-f
 }
 .nav-btn[aria-current="true"] { color: var(--accent); }
 .nav-btn svg { width: 24px; height: 24px; }
+.nav-btn:disabled { opacity: .3; cursor: default; }
+.nav-btn.on { color: var(--accent); }
+.nav-btn.on svg { fill: currentColor; }
+/* Story controls live in the sidebar only; the bottom tab bar (folded phone) never shows them. */
+.nav-tools { display: none; }
 
 /* Header */
 .topbar {
@@ -323,6 +328,10 @@ mark { background: color-mix(in srgb, var(--accent-2) 30%, transparent); color: 
     padding: var(--sat) 0 var(--sab) var(--sal);
     border-top: 0; border-right: 0.5px solid var(--line);
   }
+  .nav { justify-content: flex-start; overflow-y: auto; scrollbar-width: none; gap: 0; padding-top: calc(var(--sat) + 6px); }
+  .nav .nav-btn { min-height: 40px; padding: 4px; font-size: 9.5px; }
+  .nav .nav-btn svg { width: 21px; height: 21px; }
+  .nav-tools:not([hidden]) { display: flex; flex-direction: column; align-items: center; border-top: 0.5px solid var(--line); margin-top: 4px; padding-top: 4px; }
   .scroller { padding-bottom: calc(20px + var(--sab)); padding-left: 12px; }
   .topbar { padding-left: 16px; padding-top: calc(var(--sat) + 4px); }
   .chips { margin-left: -16px; padding-left: 16px; }
@@ -348,6 +357,8 @@ mark { background: color-mix(in srgb, var(--accent-2) 30%, transparent); color: 
     background: var(--surface);
   }
   .nav-logo { display: block; margin-bottom: 14px; }
+  .nav { overflow-y: auto; scrollbar-width: none; }
+  .nav-tools:not([hidden]) { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 10px; padding-top: 12px; border-top: 0.5px solid var(--line); }
   .brand { font-size: 24px; }
   .nav-logo img { width: 40px; height: 40px; border-radius: 11px; display: block; }
   .list-pane { border-right: 0.5px solid var(--line); }

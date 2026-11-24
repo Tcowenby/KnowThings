@@ -243,9 +243,51 @@ function settingsHTML() {
   </div>`;
 }
 
+// Story controls in the sidebar (shown when the sidebar is visible: unfolded or landscape).
+function renderRailTools(it) {
+  const tools = $('#nav-tools');
+  tools.hidden = !it;
+  if (!it) return;
+  const items = itemsFor();
+  const idx = items.findIndex((i) => i.id === it.id);
+  tools.querySelector('[data-step="-1"]').disabled = idx <= 0;
+  tools.querySelector('[data-step="1"]').disabled = idx === -1 || idx >= items.length - 1;
+  const save = $('#rail-save');
+  const on = state.saved.has(it.id);
+  save.classList.toggle('on', on);
+  save.querySelector('span').textContent = on ? 'Saved' : 'Save';
+  save.setAttribute('aria-label', on ? 'Unsave' : 'Save');
+}
+
+// Move to the previous/next story in the current list without going back.
+function step(delta) {
+  const items = itemsFor();
+  if (!items.length) return;
+  const idx = items.findIndex((i) => i.id === state.selectedId);
+  const next = items[idx === -1 ? 0 : idx + delta];
+  if (!next) return;
+  const onPhone = !isWide();
+  state.selectedId = next.id;
+  state.read.add(next.id);
+  persist();
+  if (onPhone && history.state?.detail) history.replaceState({ detail: next.id }, '');
+  if (renderList.limit && items.indexOf(next) >= renderList.limit) { renderList.limit += 60; renderList(); }
+  renderDetail();
+  listEl.querySelectorAll('.card[aria-current]').forEach((c) => c.removeAttribute('aria-current'));
+  const card = listEl.querySelector(`.card[data-id="${CSS.escape(next.id)}"]`);
+  if (card) {
+    card.setAttribute('aria-current', 'true');
+    card.classList.add('read');
+    card.querySelector('.unread')?.remove();
+    card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+  $('.detail-scroll', detailEl)?.scrollTo(0, 0);
+}
+
 function renderDetail() {
   const it = state.selectedId && findItem(state.selectedId);
   app.classList.toggle('detail-open', !!it);
+  renderRailTools(it);
   if (!it) {
     detailEl.innerHTML = isWide() ? `<div class="detail-scroll"><div class="detail-inner">${pulseHTML()}</div></div>` : '';
     return;
@@ -360,6 +402,7 @@ document.addEventListener('click', async (e) => {
   if (d.cat) { state.cat = d.cat; renderList.limit = 60; renderChips(); renderList(); scroller.scrollTo(0, 0); return; }
   if ('sort' in d) { state.sort = state.sort === 'top' ? 'latest' : 'top'; persist(); renderChips(); renderList(); scroller.scrollTo(0, 0); return; }
   if (d.open) return openItem(d.open);
+  if (d.step) return step(Number(d.step));
   if (d.catJump) { state.view = 'feed'; state.cat = d.catJump; render(); return; }
   if ('close' in d) { if (history.state?.detail) history.back(); else closeDetail(); return; }
   if (t.id === 'refresh') return loadFeed({ manual: true });
@@ -393,6 +436,9 @@ document.addEventListener('click', async (e) => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && e.target.matches('.card')) openItem(e.target.dataset.id);
   if (e.key === 'Escape') closeDetail();
+  if (e.target.matches('input, textarea, select') || !state.selectedId) return;
+  if (e.key === 'ArrowDown' || e.key === 'j') { e.preventDefault(); step(1); }
+  if (e.key === 'ArrowUp' || e.key === 'k') { e.preventDefault(); step(-1); }
 });
 
 document.addEventListener('submit', (e) => {

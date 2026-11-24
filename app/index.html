@@ -34,6 +34,23 @@
       <button class="nav-btn" data-view="settings" aria-label="Settings">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Settings</span>
       </button>
+      <div class="nav-tools" id="nav-tools" hidden>
+        <button class="nav-btn" data-close aria-label="Back">
+          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg><span>Back</span>
+        </button>
+        <button class="nav-btn" data-step="-1" aria-label="Previous story">
+          <svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg><span>Prev</span>
+        </button>
+        <button class="nav-btn" data-step="1" aria-label="Next story">
+          <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg><span>Next</span>
+        </button>
+        <button class="nav-btn" data-save aria-label="Save" id="rail-save">
+          <svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg><span>Save</span>
+        </button>
+        <button class="nav-btn" data-share aria-label="Share">
+          <svg viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M5 13v7h14v-7"/></svg><span>Share</span>
+        </button>
+      </div>
     </nav>
 
     <section class="pane list-pane" aria-label="Stories">
