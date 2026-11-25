@@ -241,7 +241,7 @@ function settingsHTML() {
 
     <div class="group"><h3>Sources · ${ok}/${health.length} healthy on last run</h3><div class="box">
       ${health.map((s) => `<div class="row"><span class="status-dot" style="background:${s.ok ? 'var(--good)' : 'var(--hot)'}"></span><span class="grow">${esc(s.label)}<small>${s.ok ? `${s.count} items` : esc(s.error || 'failed')}</small></span></div>`).join('') || '<div class="row">No data yet</div>'}
-    </div><p class="hint">The feed is rebuilt automatically every 30 minutes by a GitHub Action. X and Instagram run when their API keys are added as repository secrets (see README).</p></div>
+    </div><p class="hint">The feed is rebuilt automatically every 2 hours by a GitHub Action. X and Instagram run when their API keys are added as repository secrets (see README).</p></div>
   </div>`;
 }
 

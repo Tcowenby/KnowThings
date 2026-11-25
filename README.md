@@ -5,7 +5,7 @@ KnowThings collects AI news from across the web and shows it in one ranked feed.
 ## How it works
 
 ```
-GitHub Action (every 30 min)            GitHub Pages (free hosting)
+GitHub Action (every 2 hours)           GitHub Pages (free hosting)
 ┌───────────────────────────┐          ┌──────────────────────────┐
 │ scraper/  → collects ~70  │  deploy  │ app/  → the iPhone app   │
 │ sources, filters for AI,  │ ───────▶ │ reads data/feed.json,    │
@@ -13,7 +13,7 @@ GitHub Action (every 30 min)            GitHub Pages (free hosting)
 └───────────────────────────┘          └──────────────────────────┘
 ```
 
-There is no server to run and nothing to pay for. GitHub rebuilds the feed every 30 minutes, and the app picks up the new version when you open it or pull down to refresh.
+There is no server to run and nothing to pay for. GitHub rebuilds the feed every 2 hours, and the app picks up the new version when you open it or pull down to refresh.
 
 ### Sources
 
@@ -47,7 +47,7 @@ To add or change sources, searches, keywords or categories, edit **`scraper/sour
 1. **Merge this branch into `main`.**
 2. **Turn on Pages:** go to the repo's **Settings → Pages → Build and deployment → Source** and choose **GitHub Actions**.
    *GitHub Pages is free for public repos. For a private repo it needs GitHub Pro.*
-3. **Run it once:** **Actions → "Update feed & deploy app" → Run workflow.** After that it runs on its own every 30 minutes.
+3. **Run it once:** **Actions → "Update feed & deploy app" → Run workflow.** After that it runs on its own every 2 hours.
 4. Your app is at **`https://tcowenby.github.io/KnowThings/`**.
 
 ### Add it to your iPhone Home Screen

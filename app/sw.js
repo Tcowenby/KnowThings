@@ -1,5 +1,5 @@
 // Service worker: app shell works offline; feed is network-first with cached fallback.
-const VERSION = 'kt-v4';
+const VERSION = 'kt-v5';
 const SHELL = ['./', 'index.html', 'styles.css', 'app.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/apple-touch-icon.png'];
 
 self.addEventListener('install', (e) => {
